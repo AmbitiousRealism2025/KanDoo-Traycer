@@ -134,8 +134,8 @@ const initialColumns: Column[] = [
         title: 'AI-powered task prioritization',
         description: 'Explore machine learning models for automatic task priority suggestions',
         tags: [
-          { id: 'tag-1', label: 'React', color: 'var(--color-cyan)' },
-          { id: 'tag-2', label: 'Critical', color: 'var(--color-coral)' }
+          { id: 'tag-react', label: 'React', color: '#4fd1ff' },
+          { id: 'tag-critical', label: 'Critical', color: '#f87171' }
         ],
         columnId: 'ideas'
       },
@@ -143,8 +143,8 @@ const initialColumns: Column[] = [
         id: 'card-2',
         title: 'Dark mode toggle',
         tags: [
-          { id: 'tag-3', label: 'UI/UX', color: 'var(--color-magenta)' },
-          { id: 'tag-4', label: 'Medium', color: 'var(--color-gold)' }
+          { id: 'tag-uiux', label: 'UI/UX', color: '#f472b6' },
+          { id: 'tag-medium', label: 'Medium', color: '#facc15' }
         ],
         columnId: 'ideas'
       }
@@ -161,8 +161,8 @@ const initialColumns: Column[] = [
         title: 'Design tag system architecture',
         description: 'Define data structures and API endpoints for tag CRUD operations',
         tags: [
-          { id: 'tag-5', label: 'API', color: 'var(--color-purple)' },
-          { id: 'tag-6', label: 'Database', color: 'var(--color-gold)' }
+          { id: 'tag-api', label: 'API', color: '#c084fc' },
+          { id: 'tag-database', label: 'Database', color: '#fbbf24' }
         ],
         columnId: 'planning'
       },
@@ -170,8 +170,8 @@ const initialColumns: Column[] = [
         id: 'card-4',
         title: 'Accessibility audit checklist',
         tags: [
-          { id: 'tag-7', label: 'UI/UX', color: 'var(--color-magenta)' },
-          { id: 'tag-8', label: 'High', color: 'var(--color-magenta)' }
+          { id: 'tag-uiux', label: 'UI/UX', color: '#f472b6' },
+          { id: 'tag-high', label: 'High', color: '#fb7185' }
         ],
         columnId: 'planning'
       }
@@ -188,8 +188,8 @@ const initialColumns: Column[] = [
         title: 'Implement drag-and-drop with @dnd-kit',
         description: 'Integrate accessible drag-and-drop for card movement between columns',
         tags: [
-          { id: 'tag-9', label: 'React', color: 'var(--color-cyan)' },
-          { id: 'tag-10', label: 'High', color: 'var(--color-magenta)' }
+          { id: 'tag-react', label: 'React', color: '#4fd1ff' },
+          { id: 'tag-high', label: 'High', color: '#fb7185' }
         ],
         columnId: 'coding'
       },
@@ -197,8 +197,8 @@ const initialColumns: Column[] = [
         id: 'card-6',
         title: 'LocalStorage persistence layer',
         tags: [
-          { id: 'tag-11', label: 'API', color: 'var(--color-purple)' },
-          { id: 'tag-12', label: 'Medium', color: 'var(--color-gold)' }
+          { id: 'tag-api', label: 'API', color: '#c084fc' },
+          { id: 'tag-medium', label: 'Medium', color: '#facc15' }
         ],
         columnId: 'coding'
       }
@@ -215,8 +215,8 @@ const initialColumns: Column[] = [
         title: 'Keyboard navigation testing',
         description: 'Verify all interactive elements are accessible via keyboard shortcuts',
         tags: [
-          { id: 'tag-13', label: 'UI/UX', color: 'var(--color-magenta)' },
-          { id: 'tag-14', label: 'Critical', color: 'var(--color-coral)' }
+          { id: 'tag-uiux', label: 'UI/UX', color: '#f472b6' },
+          { id: 'tag-critical', label: 'Critical', color: '#f87171' }
         ],
         columnId: 'testing'
       }
@@ -233,8 +233,8 @@ const initialColumns: Column[] = [
         title: 'Cyberpunk design system',
         description: 'Glass-morphism utilities and neon color palette established',
         tags: [
-          { id: 'tag-15', label: 'UI/UX', color: 'var(--color-magenta)' },
-          { id: 'tag-16', label: 'React', color: 'var(--color-cyan)' }
+          { id: 'tag-uiux', label: 'UI/UX', color: '#f472b6' },
+          { id: 'tag-react', label: 'React', color: '#4fd1ff' }
         ],
         columnId: 'deployed'
       },
@@ -242,8 +242,8 @@ const initialColumns: Column[] = [
         id: 'card-9',
         title: 'Typewriter animation hook',
         tags: [
-          { id: 'tag-17', label: 'React', color: 'var(--color-cyan)' },
-          { id: 'tag-18', label: 'Low', color: 'var(--color-cyan)' }
+          { id: 'tag-react', label: 'React', color: '#4fd1ff' },
+          { id: 'tag-low', label: 'Low', color: '#4fd1ff' }
         ],
         columnId: 'deployed'
       }
@@ -452,10 +452,27 @@ export const useBoardStore = create<BoardStore>((set, get) => ({
         tag.id === tagId ? { ...tag, ...updates } : tag
       );
 
-      // Debounced save to localStorage
-      debouncedSaveToStorage({ columns: state.columns, tags: updatedTags });
+      // Find the updated tag object
+      const updatedTag = updatedTags.find((tag) => tag.id === tagId);
+      if (!updatedTag) {
+        return state;
+      }
 
-      return { tags: updatedTags };
+      // Propagate tag updates to all cards that use this tag
+      const updatedColumns = state.columns.map((column) => ({
+        ...column,
+        cards: column.cards.map((card) => ({
+          ...card,
+          tags: card.tags.map((tag) =>
+            tag.id === tagId ? updatedTag : tag
+          )
+        }))
+      }));
+
+      // Debounced save to localStorage
+      debouncedSaveToStorage({ columns: updatedColumns, tags: updatedTags });
+
+      return { columns: updatedColumns, tags: updatedTags };
     });
   },
 
@@ -540,8 +557,8 @@ export const useBoardStore = create<BoardStore>((set, get) => ({
     const stored = loadFromStorage();
     if (stored) {
       set({
-        columns: stored.columns || initialColumns,
-        tags: stored.tags || initialTags
+        columns: stored.columns && stored.columns.length > 0 ? stored.columns : initialColumns,
+        tags: stored.tags && stored.tags.length > 0 ? stored.tags : initialTags
       });
     }
   }

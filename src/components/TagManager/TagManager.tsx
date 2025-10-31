@@ -3,7 +3,7 @@
  * Allows creating, editing, and deleting tags with cascade operations
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import type { Tag } from '../../types';
@@ -48,6 +48,7 @@ export default function TagManager({
   const [newTagLabel, setNewTagLabel] = useState('');
   const [newTagColor, setNewTagColor] = useState('#4fd1ff');
   const [labelError, setLabelError] = useState('');
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const tags = useBoardStore((state) => state.tags);
   const addTag = useBoardStore((state) => state.addTag);
@@ -56,7 +57,7 @@ export default function TagManager({
 
   // Escape key handler
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || !modalRef.current) return;
 
     const handleEscape = (event: KeyboardEvent): void => {
       if (event.key === 'Escape') {
@@ -64,17 +65,19 @@ export default function TagManager({
       }
     };
 
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
+    modalRef.current.addEventListener('keydown', handleEscape);
+    return () => {
+      if (modalRef.current) {
+        modalRef.current.removeEventListener('keydown', handleEscape);
+      }
+    };
   }, [isOpen, onClose]);
 
   // Focus trap
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || !modalRef.current) return;
 
-    const modalElement = document.querySelector('[role="dialog"]');
-    if (!modalElement) return;
-
+    const modalElement = modalRef.current;
     const focusableElements = modalElement.querySelectorAll(
       'button, input, textarea, [tabindex]:not([tabindex="-1"])'
     );
@@ -195,6 +198,7 @@ export default function TagManager({
           onClick={handleOverlayClick}
         >
           <motion.div
+            ref={modalRef}
             className={styles.modal}
             role="dialog"
             aria-modal="true"

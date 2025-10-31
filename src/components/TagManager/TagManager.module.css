@@ -199,8 +199,21 @@
   letter-spacing: 0.05em;
 }
 
+.button:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+
 .buttonPrimary {
-  composes: button;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   background: var(--color-cyan);
   color: var(--color-bg);
   border-color: var(--color-cyan);
@@ -211,8 +224,21 @@
   box-shadow: 0 0 12px rgba(79, 209, 255, 0.4);
 }
 
+.buttonPrimary:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+
 .buttonSecondary {
-  composes: button;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   background: rgba(255, 255, 255, 0.05);
   color: var(--color-text-primary);
   border-color: rgba(255, 255, 255, 0.2);
@@ -223,8 +249,21 @@
   border-color: rgba(255, 255, 255, 0.3);
 }
 
+.buttonSecondary:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+
 .buttonDanger {
-  composes: button;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   background: var(--color-coral);
   color: var(--color-bg);
   border-color: var(--color-coral);
@@ -235,7 +274,7 @@
   box-shadow: 0 0 12px rgba(248, 113, 113, 0.4);
 }
 
-.button:focus-visible {
+.buttonDanger:focus-visible {
   outline: 2px solid var(--color-cyan);
   outline-offset: 2px;
 }
