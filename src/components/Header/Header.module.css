@@ -1,0 +1,74 @@
+.header {
+  padding: 2rem 1rem;
+  text-align: center;
+  position: relative;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  font-size: clamp(0.875rem, 2vw, 1.125rem);
+  line-height: 1.6;
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor {
+  display: inline-block;
+  animation: blink 1s infinite;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+/* Token color classes for syntax highlighting */
+.tokenKeyword {
+  color: var(--color-cyan);
+}
+
+.tokenString {
+  color: var(--color-magenta);
+}
+
+.tokenFunction {
+  color: var(--color-emerald);
+}
+
+.tokenPunctuation {
+  color: var(--color-purple);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .container {
+    padding: 0.5rem;
+  }
+
+  .title {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.75rem;
+  }
+
+  .subtitle {
+    font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+  }
+}

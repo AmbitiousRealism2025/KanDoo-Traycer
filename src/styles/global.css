@@ -1,0 +1,103 @@
+/* CSS Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Cyberpunk Color Palette */
+  --color-cyan: #4fd1ff;
+  --color-cyan-bright: #61dafb;
+  --color-purple: #c084fc;
+  --color-magenta: #f472b6;
+  --color-emerald: #34d399;
+  --color-emerald-light: #6ee7b7;
+  --color-gold: #fbbf24;
+  --color-yellow: #facc15;
+  --color-coral: #f87171;
+  --color-pink: #fb7185;
+
+  /* Background Colors */
+  --color-bg-dark: #030712;
+  --color-bg-darker: #0f172a;
+
+  /* Text Colors */
+  --color-text-primary: rgba(255, 255, 255, 0.95);
+  --color-text-secondary: rgba(255, 255, 255, 0.7);
+  --color-text-muted: rgba(255, 255, 255, 0.5);
+
+  /* Glass-morphism Variables */
+  --glass-bg: rgba(15, 23, 42, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: 12px;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(to bottom, var(--color-bg-dark), var(--color-bg-darker));
+  min-height: 100vh;
+  color: var(--color-text-primary);
+}
+
+/* Cursor Blink Animation */
+@keyframes blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Utility Classes */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.neon-glow-cyan {
+  text-shadow:
+    0 0 10px var(--color-cyan),
+    0 0 20px var(--color-cyan),
+    0 0 30px var(--color-cyan-bright),
+    0 0 40px var(--color-cyan-bright);
+}
+
+.monospace {
+  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+}
+
+/* Accessibility: Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

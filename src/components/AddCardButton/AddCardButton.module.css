@@ -1,0 +1,53 @@
+/**
+ * AddCardButton Styling
+ * Cyberpunk-themed button with glass effect and cyan accent
+ */
+
+.addButton {
+  width: 100%;
+  padding: var(--spacing-md);
+  background: rgba(79, 209, 255, 0.1);
+  border: 2px dashed rgba(79, 209, 255, 0.3);
+  border-radius: var(--radius-md);
+  color: var(--color-cyan);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.addButton:hover {
+  background: rgba(79, 209, 255, 0.2);
+  border-color: var(--color-cyan);
+  transform: translateY(-2px);
+}
+
+.addButton:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+
+.addButton:active {
+  transform: translateY(0);
+}
+
+/* Disable transform animations for reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .addButton {
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+
+  .addButton:hover {
+    transform: none;
+  }
+
+  .addButton:active {
+    transform: none;
+  }
+}

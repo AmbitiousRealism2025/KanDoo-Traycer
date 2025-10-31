@@ -1,0 +1,111 @@
+.column {
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  min-width: 280px;
+  height: fit-content;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.column:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(79, 209, 255, 0.15);
+}
+
+/* Drop target state - applied when a draggable card is hovering over the column */
+.columnDropTarget {
+  background: rgba(79, 209, 255, 0.05);
+  border-color: rgba(79, 209, 255, 0.4);
+  box-shadow: 0 0 20px rgba(79, 209, 255, 0.2);
+  transition: all 0.2s ease;
+}
+
+.accentBar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(to bottom, var(--accent-color), transparent);
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-left: var(--spacing-md);
+}
+
+.columnTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.columnSubtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.cardCount {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  margin-top: var(--spacing-xs);
+  font-weight: 500;
+}
+
+.cardsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+  min-height: 100px;
+}
+
+.emptyState {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  text-align: center;
+  padding: var(--spacing-lg);
+  font-style: italic;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .column {
+    padding: var(--spacing-md);
+  }
+
+  .columnTitle {
+    font-size: 1.1rem;
+  }
+
+  .columnSubtitle {
+    font-size: 0.8rem;
+  }
+
+  .cardCount {
+    font-size: 0.7rem;
+  }
+}
+
+/* Reduce animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .columnDropTarget {
+    /* Simplify transition for reduced motion, keep visual feedback */
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+}

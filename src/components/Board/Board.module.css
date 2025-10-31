@@ -1,0 +1,45 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--spacing-lg);
+  width: 100%;
+  padding: var(--spacing-md);
+}
+
+/* Tablet: horizontal scrolling */
+@media (max-width: 1024px) {
+  .board {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: var(--spacing-lg);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Subtle scrollbar styling for webkit browsers */
+  .board::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .board::-webkit-scrollbar-track {
+    background: rgba(3, 7, 18, 0.5);
+    border-radius: 4px;
+  }
+
+  .board::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    backdrop-filter: blur(10px);
+  }
+
+  .board::-webkit-scrollbar-thumb:hover {
+    background: rgba(79, 209, 255, 0.3);
+  }
+}
+
+/* Mobile: tighter spacing */
+@media (max-width: 768px) {
+  .board {
+    gap: var(--spacing-md);
+  }
+}

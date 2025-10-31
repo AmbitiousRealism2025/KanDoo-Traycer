@@ -1,0 +1,19 @@
+/* CodeRain canvas - positioned behind all content */
+.canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* Hide animation for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .canvas {
+    opacity: 0;
+    display: none;
+  }
+}

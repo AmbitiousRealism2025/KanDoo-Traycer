@@ -1,0 +1,46 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  text-align: center;
+  background: rgba(3, 7, 18, 0.8);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--glass-border);
+  z-index: 100;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text {
+  letter-spacing: 0.05em;
+  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+}
+
+.cursor {
+  display: inline-block;
+  animation: blink 1s infinite;
+  margin-left: 4px;
+  color: var(--color-text-primary);
+  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .container {
+    font-size: 0.75rem;
+  }
+}
