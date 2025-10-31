@@ -3,7 +3,7 @@
  * Provides type-safe storage operations for board state persistence
  */
 
-import type { Column } from '../types';
+import type { Column, Tag } from '../types';
 
 const isLocalStorageAvailable =
   typeof window !== 'undefined' && typeof localStorage !== 'undefined';
@@ -14,10 +14,12 @@ export const STORAGE_KEY = 'kandoo-flowboard-state';
 // Type definition for stored data structure
 export interface StorageData {
   columns: Column[];
+  tags: Tag[];
 }
 
 /**
  * Loads board state from localStorage
+ * Handles backward compatibility for older localStorage data without tags
  * @returns Parsed storage data or null if no data exists or parsing fails
  */
 export function loadFromStorage(): StorageData | null {
@@ -30,8 +32,13 @@ export function loadFromStorage(): StorageData | null {
     if (!stored) {
       return null;
     }
-    const parsed = JSON.parse(stored) as StorageData;
-    return parsed;
+    const parsed = JSON.parse(stored);
+
+    // Backward compatibility: older saves may not have tags property
+    return {
+      columns: parsed.columns || [],
+      tags: parsed.tags || []
+    };
   } catch (error) {
     console.error('Failed to load from localStorage:', error);
     return null;

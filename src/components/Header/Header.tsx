@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTypewriter } from '../../hooks/useTypewriter';
 import clsx from 'clsx';
 import styles from './Header.module.css';

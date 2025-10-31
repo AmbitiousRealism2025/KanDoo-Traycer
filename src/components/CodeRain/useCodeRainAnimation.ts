@@ -23,7 +23,12 @@ interface ColorMap {
 }
 
 const getRandomSnippet = (): CodeSnippet => {
-  return CODE_SNIPPETS[Math.floor(Math.random() * CODE_SNIPPETS.length)];
+  const index = Math.floor(Math.random() * CODE_SNIPPETS.length);
+  const snippet = CODE_SNIPPETS[index];
+  if (!snippet) {
+    return [];
+  }
+  return snippet;
 };
 
 const computeTokenWidths = (

@@ -6,12 +6,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import TagSelector from '../TagSelector/TagSelector';
+import { useBoardStore } from '../../stores/boardStore';
 import styles from './AddCardModal.module.css';
 
 interface AddCardModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (title: string, description?: string) => void;
+  onSubmit: (title: string, description?: string, tagIds?: string[]) => void;
   columnTitle: string;
 }
 
@@ -24,6 +26,9 @@ const AddCardModal: React.FC<AddCardModalProps> = ({
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [titleError, setTitleError] = useState('');
+  const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
+
+  const availableTags = useBoardStore((state) => state.tags);
 
   // Handle escape key press to close modal
   useEffect(() => {
@@ -58,6 +63,7 @@ const AddCardModal: React.FC<AddCardModalProps> = ({
       setTitle('');
       setDescription('');
       setTitleError('');
+      setSelectedTagIds([]);
     }
   }, [isOpen]);
 
@@ -72,14 +78,27 @@ const AddCardModal: React.FC<AddCardModalProps> = ({
 
     // Clear error and submit
     setTitleError('');
-    onSubmit(title.trim(), description.trim() || undefined);
+    onSubmit(
+      title.trim(),
+      description.trim() || undefined,
+      selectedTagIds.length > 0 ? selectedTagIds : undefined
+    );
 
     // Reset form
     setTitle('');
     setDescription('');
+    setSelectedTagIds([]);
 
     // Close modal
     onClose();
+  };
+
+  const handleTagToggle = (tagId: string): void => {
+    setSelectedTagIds((prev) =>
+      prev.includes(tagId)
+        ? prev.filter((id) => id !== tagId)
+        : [...prev, tagId]
+    );
   };
 
   const handleOverlayClick = (): void => {
@@ -157,6 +176,12 @@ const AddCardModal: React.FC<AddCardModalProps> = ({
                   placeholder="Add more details (optional)"
                 />
               </div>
+
+              <TagSelector
+                availableTags={availableTags}
+                selectedTagIds={selectedTagIds}
+                onTagToggle={handleTagToggle}
+              />
 
               <div className={styles.actions}>
                 <button

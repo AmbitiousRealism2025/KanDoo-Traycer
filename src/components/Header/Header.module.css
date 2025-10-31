@@ -72,3 +72,11 @@
     font-size: clamp(0.75rem, 1.5vw, 0.875rem);
   }
 }
+
+/* Reduce animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .cursor {
+    animation: none;
+    opacity: 1;
+  }
+}

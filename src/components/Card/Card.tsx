@@ -15,7 +15,7 @@ interface CardProps {
   activeId?: string | null;
 }
 
-const Card: React.FC<CardProps> = ({ id, title, description, tags, onDelete, activeId }) => {
+const Card: React.FC<CardProps> = ({ id, title, description, tags, onDelete }) => {
   const {
     attributes,
     listeners,
@@ -30,8 +30,11 @@ const Card: React.FC<CardProps> = ({ id, title, description, tags, onDelete, act
     transition
   };
 
+  // Create accessible label for screen readers
+  const ariaLabel = `Card: ${title}${description ? '. ' + description.substring(0, 50) + (description.length > 50 ? '...' : '') : ''}${tags.length > 0 ? `. Tags: ${tags.map(t => t.label).join(', ')}` : ''}`;
+
   return (
-    <motion.div
+    <motion.article
       ref={setNodeRef}
       className={clsx('glass-panel', styles.card, isDragging && styles.cardDragging)}
       layout={!isDragging}
@@ -40,6 +43,7 @@ const Card: React.FC<CardProps> = ({ id, title, description, tags, onDelete, act
       exit={{ opacity: 0, scale: 0.9 }}
       transition={{ duration: 0.2 }}
       style={style}
+      aria-label={ariaLabel}
       {...attributes}
       {...listeners}
     >
@@ -75,7 +79,7 @@ const Card: React.FC<CardProps> = ({ id, title, description, tags, onDelete, act
           ))}
         </div>
       )}
-    </motion.div>
+    </motion.article>
   );
 };
 

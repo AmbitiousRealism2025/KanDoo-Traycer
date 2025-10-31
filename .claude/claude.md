@@ -165,10 +165,64 @@ The kanban board has five workflow columns:
 - **Transform Conflict Resolution**: Resolved framer-motion/dnd-kit transform conflicts by conditionally disabling layout animations during drag, allowing @dnd-kit transforms to control positioning while preserving framer-motion for entrance/exit animations
 - **Accessibility**: Full keyboard drag-and-drop support via KeyboardSensor with sortableKeyboardCoordinates, touch support for mobile devices, proper ARIA attributes, focus management maintained throughout drag operations
 - **Performance**: Optimized with debounced state persistence (500ms delay), efficient immutable updates, proper React re-render optimization through selective Zustand selectors
+- **Post-review Adjustments (Codex - 2025-11-02)**: Added drag origin tracking with cancel restoration to revert previews, introduced optional persistence flags so preview moves skip storage writes, and treated column-surface drops as move-to-end operations that persist only after drop completion.
+
+### ✅ Phase 5: Tag Management System (Completed)
+- **Store Extensions**: Extended `src/stores/boardStore.ts` with global tag state and comprehensive tag management:
+  - Added `tags: Tag[]` to BoardState with 9 preset tags (Tech Stack: React/cyan, Python/emerald, API/purple, Database/gold, UI/UX/magenta; Priority: Critical/coral, High/pink, Medium/yellow, Low/cyan)
+  - Updated `addCard` action to accept optional `tagIds` parameter and map to full Tag objects from store
+  - Implemented 5 new tag management actions: `addTag(label, color)` for creating custom tags with unique IDs, `updateTag(tagId, updates)` for editing tag properties, `deleteTag(tagId)` for removing tags with cascade delete from all cards, `addTagToCard(cardId, tagId)` for tag-card association, `removeTagFromCard(cardId, tagId)` for removing associations
+  - All actions use immutable update patterns and trigger debounced localStorage persistence
+- **Storage Utility Updates**: Modified `src/utils/storage.ts` to persist tags alongside columns:
+  - Extended `StorageData` interface to include `tags: Tag[]`
+  - Updated `loadFromStorage` with backward compatibility handling for older localStorage data without tags (returns empty array for tags if not present)
+  - All save operations now persist both columns and tags in single storage object
+- **TagSelector Component**: Created `src/components/TagSelector/TagSelector.tsx` for tag selection in card creation:
+  - Props: availableTags (Tag[]), selectedTagIds (string[]), onTagToggle (callback), optional maxTags (limit)
+  - Renders scrollable tag list (max-height 150px) with clickable chip buttons
+  - Visual states: selected chips have 2px solid border and 30% background opacity, disabled chips when maxTags reached
+  - Each chip displays colored dot indicator and label with color-mix() backgrounds
+  - Empty state hint when no tags selected
+  - Full accessibility: aria-pressed attributes, keyboard navigation, focus-visible states
+  - Styled via `TagSelector.module.css` with cyberpunk design system, custom scrollbar, reduced-motion support
+- **TagManager Component**: Created `src/components/TagManager/TagManager.tsx` for global tag management modal:
+  - Props: isOpen (boolean), onClose (callback)
+  - Modal features: create/edit tag form with label input and color selection, preset color palette (8 swatches) plus native color picker, tags list displaying all available tags with edit/delete actions
+  - Preset tags (initial 9) are read-only with disabled edit/delete buttons (identified by hardcoded ID array)
+  - Custom tags fully editable and deletable with cascade delete confirmation via window.confirm
+  - Form validation: label required with error messaging
+  - Local state: editingTagId (tracks edit mode), newTagLabel/newTagColor (form inputs), labelError (validation)
+  - Full modal accessibility: Escape key handler, focus trap, ARIA dialog attributes, keyboard navigation
+  - Styled via `TagManager.module.css` with glass-morphism, color swatch grid, responsive mobile adjustments, reduced-motion support
+- **AddCardModal Integration**: Updated `src/components/AddCardModal/AddCardModal.tsx` to include tag selection:
+  - Imported TagSelector component and useBoardStore for tags array
+  - Added selectedTagIds state (string[]) with toggle handler for selection/deselection
+  - Updated onSubmit prop signature to accept optional `tagIds?: string[]` parameter
+  - Rendered TagSelector between description textarea and action buttons
+  - Form submission passes selectedTagIds to parent, form reset clears selected tags
+- **Column Component Updates**: Modified `src/components/Column/Column.tsx` to handle tag IDs:
+  - Updated onAddCard prop signature to accept optional `tagIds?: string[]` parameter
+  - Updated handleSubmit to pass tagIds through to Board component
+- **Board Component Integration**: Updated `src/components/Board/Board.tsx` to include TagManager access:
+  - Imported TagManager component
+  - Added isTagManagerOpen state with handlers (handleOpenTagManager, handleCloseTagManager)
+  - Rendered floating action button (🏷 emoji) positioned fixed bottom-right for tag management access
+  - Rendered TagManager modal with isOpen/onClose props
+  - addCard action already has correct signature after store modifications
+- **Board Styling**: Extended `src/components/Board/Board.module.css` with manage tags button:
+  - `.manageTagsButton`: 56px circular button, fixed positioning (bottom: calc(var(--spacing-xl) + 60px), right: var(--spacing-xl)), glass-morphism background, 2px cyan border, cyan glow shadow, z-index 100
+  - Hover state: translateY(-2px) scale(1.05) lift effect, enhanced glow shadow, cyan-tinted background
+  - Focus-visible: 2px cyan outline with 4px offset
+  - Mobile responsive: 48px size, adjusted positioning for smaller screens
+  - Reduced-motion: disabled transform animations
+- **Technical Implementation**: Global tag state centralized in Zustand store, cascade delete removes tags from all cards when deleting tag, tag IDs mapped to full Tag objects during card creation preventing orphaned references, debounced persistence (500ms) for all tag operations, backward-compatible storage schema supporting older saves without tags, preset vs custom tag distinction for UI restrictions (read-only presets), color-mix() CSS for consistent tag chip styling across components
+- **Accessibility Features**: Full keyboard navigation in TagManager (Tab, Escape), TagSelector chips with aria-pressed, focus traps in modal dialogs, semantic HTML (button, form, label elements), ARIA labels on all interactive elements, reduced-motion support for all animations, screen reader compatibility via proper dialog markup
+- **User Experience**: Inline tag selection during card creation (no context switching), persistent tag library across sessions, visual color coding with 8 preset colors plus custom color picker, cascade delete protection via confirmation dialog, hover-revealed edit/delete actions in tag list, empty state hints and validation feedback, responsive mobile-optimized layouts
+- **File Organization**: Created new component directories (TagSelector/, TagManager/) following established pattern with co-located CSS Modules, updated existing components (AddCardModal, Column, Board) with tag integration, extended central store and storage utilities
+- Completion marker: `~/.traycer/yolo_artifacts/f1b9995e-0196-44a1-92b1-ccfb73f1b04e.json`
 
 ### 🔄 Next Phase: Advanced Features
-- Add card editing capability (update existing cards via modal)
-- Implement tag creation and assignment with color coding
-- Build tag management system with color picker
+- Add card editing capability (updateCard action exists but no UI yet)
 - Add keyboard shortcuts for power users
 - Implement card filtering and search functionality
+- Add card archiving/completion workflows

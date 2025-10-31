@@ -15,7 +15,7 @@ interface ColumnProps {
   subtitle: string;
   accentColor: string;
   cards: Card[];
-  onAddCard: (columnId: string, title: string, description?: string) => void;
+  onAddCard: (columnId: string, title: string, description?: string, tagIds?: string[]) => void;
   onDeleteCard: (cardId: string) => void;
   activeId: string | null;
 }
@@ -48,8 +48,8 @@ const Column: React.FC<ColumnProps> = ({
     setIsModalOpen(false);
   };
 
-  const handleSubmit = (cardTitle: string, cardDescription?: string): void => {
-    onAddCard(id, cardTitle, cardDescription);
+  const handleSubmit = (cardTitle: string, cardDescription?: string, tagIds?: string[]): void => {
+    onAddCard(id, cardTitle, cardDescription, tagIds);
   };
 
   const handleDeleteCard = (cardId: string): void => {
@@ -61,6 +61,7 @@ const Column: React.FC<ColumnProps> = ({
       ref={setNodeRef}
       className={clsx('glass-panel', styles.column, isOver && styles.columnDropTarget)}
       style={{ '--accent-color': accentColor } as React.CSSProperties}
+      aria-label={`${title} column with ${cardCount} ${cardCount === 1 ? 'card' : 'cards'}`}
     >
       <div className={styles.accentBar} />
 

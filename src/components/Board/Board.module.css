@@ -6,6 +6,37 @@
   padding: var(--spacing-md);
 }
 
+.manageTagsButton {
+  position: fixed;
+  bottom: calc(var(--spacing-xl) + 60px);
+  right: var(--spacing-xl);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.3s ease;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 2px solid var(--color-cyan);
+  box-shadow: 0 4px 16px rgba(79, 209, 255, 0.3);
+}
+
+.manageTagsButton:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 24px rgba(79, 209, 255, 0.5);
+  background: color-mix(in srgb, var(--color-cyan) 10%, var(--glass-bg));
+}
+
+.manageTagsButton:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 4px;
+}
+
 /* Tablet: horizontal scrolling */
 @media (max-width: 1024px) {
   .board {
@@ -37,9 +68,28 @@
   }
 }
 
-/* Mobile: tighter spacing */
+/* Mobile: tighter spacing and smaller button */
 @media (max-width: 768px) {
   .board {
     gap: var(--spacing-md);
+  }
+
+  .manageTagsButton {
+    width: 48px;
+    height: 48px;
+    font-size: 1.25rem;
+    bottom: calc(var(--spacing-lg) + 50px);
+    right: var(--spacing-lg);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .manageTagsButton {
+    transition: none;
+  }
+
+  .manageTagsButton:hover {
+    transform: none;
   }
 }

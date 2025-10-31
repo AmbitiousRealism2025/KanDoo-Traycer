@@ -1,0 +1,99 @@
+/**
+ * TagSelector component styles
+ * Follows cyberpunk design system with glass-morphism and tag chip patterns
+ */
+
+.selectorContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tagsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  max-height: 150px;
+  overflow-y: auto;
+  padding: var(--spacing-xs);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tagChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--tag-color) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tag-color) 40%, transparent);
+  color: var(--tag-color);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tagChip:hover {
+  background: color-mix(in srgb, var(--tag-color) 25%, transparent);
+  border-color: color-mix(in srgb, var(--tag-color) 60%, transparent);
+}
+
+.tagChipSelected {
+  background: color-mix(in srgb, var(--tag-color) 30%, transparent);
+  border: 2px solid var(--tag-color);
+  font-weight: 600;
+}
+
+.tagChip:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.tagDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--tag-color);
+  flex-shrink: 0;
+}
+
+.emptyHint {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  padding: var(--spacing-xs);
+}
+
+/* Custom scrollbar styling */
+.tagsList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tagsList::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tagsList::-webkit-scrollbar-thumb {
+  background: rgba(79, 209, 255, 0.3);
+  border-radius: 3px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .tagChip {
+    transition: none;
+  }
+}
